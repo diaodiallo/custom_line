@@ -1,0 +1,7 @@
+name: "Custom line"
+type: module
+description: "Custom view area for min/max/target fields."
+dependencies:
+  - views
+package: "Views"
+core: 8.x
