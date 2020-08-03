@@ -1,13 +1,6 @@
 <?php
 
-use Drupal\Component\Utility\NestedArray;
-use Drupal\custom_line\Plugin\views\area\MyCustomViewArea;
-use Drupal\views\ViewExecutable;
-
-
-//  $area = new MyCustomViewArea();
-//  $field_value = $area->options['data_field'];
-//  $label = $area->options['admin_label'];
+// use Drupal\Component\Utility\NestedArray;
 
 /**
  * This is also an option in case you want to know about the line earlier on.
@@ -46,7 +39,7 @@ function custom_line_chart_definition_alter(array &$definition, array $element, 
       'dashStyle' => 'shortdash',
       'width' => 2,
       'label' => [
-        'text' => 'poo',
+        'text' => 'foo',
       ],
     ];
   }
