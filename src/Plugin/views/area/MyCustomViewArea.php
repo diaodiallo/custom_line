@@ -15,7 +15,6 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\views\ViewExecutable;
 use Drupal\Core\Url;
 
-
 /**
  * Defines a Plugin to custom min/max/target fields.
  *
@@ -56,28 +55,28 @@ class MyCustomViewArea extends AreaPluginBase {
    * {@inheritdoc}
    */
   public function render($empty = FALSE) {
-
-      $field_value = $this->options['data_field'];
-      $label = $this->options['admin_label'];
-      $message = $this->t('<p class="no-results-found">Your value is <span>"@value"</span>.</p>', ['@value' => $field_value]);
-
-    $this->options['raw_options'] = [
-      'yaxis' => [
-        'plotLines' => [
-          'value' => $field_value,
-          'color' => 'green',
-          'dashStyle' => 'shortdash',
-          'with' => 2,
-          'label' => [
-            'text' => $label,
-          ]
-        ]
-      ]
-    ];
-
-    return [
-      '#markup' => $message,
-    ];
+//
+//      $field_value = $this->options['data_field'];
+//      $label = $this->options['admin_label'];
+//      $message = $this->t('<p class="no-results-found">Your value is <span>"@value"</span>.</p>', ['@value' => $field_value]);
+//
+//    $this->options['raw_options'] = [
+//      'yaxis' => [
+//        'plotLines' => [
+//          'value' => $field_value,
+//          'color' => 'green',
+//          'dashStyle' => 'shortdash',
+//          'with' => 2,
+//          'label' => [
+//            'text' => $label,
+//          ]
+//        ]
+//      ]
+//    ];
+//
+//    return [
+//      '#markup' => $message,
+//    ];
   }
 
 }

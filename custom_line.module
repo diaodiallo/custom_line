@@ -1,45 +1,53 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: ddiallo
- * Date: 7/23/20
- * Time: 2:27 PM
- */
 
+use Drupal\Component\Utility\NestedArray;
 use Drupal\custom_line\Plugin\views\area\MyCustomViewArea;
 use Drupal\views\ViewExecutable;
-use Drupal\views\Plugin\views\display\DisplayPluginBase;
 
-//function custom_line_chart_alter(array &$element, $chart_id) {
 
 //  $area = new MyCustomViewArea();
 //  $field_value = $area->options['data_field'];
 //  $label = $area->options['admin_label'];
 
-//  $this->options['raw_options'] = [
-//    'yaxis' => [
-//      'plotLines' => [
-//        'value' => $field_value,
-//        'color' => 'green',
-//        'dashStyle' => 'shortdash',
-//        'with' => 2,
-//        'label' => [
-//          'text' => $label,
-//        ]
-//      ]
-//    ]
-//  ];
-  // template_preprocess_views_view
-  // drupal_set_message(json_encode($field_value)." Field value");
-
-//}
-
 /**
- * Implements template_preprocess_hook().
+ * This is also an option in case you want to know about the line earlier on.
+ *
+ * function custom_line_chart_alter(array &$element, $chart_id) {
+ *   $raw_options['yAxis']['plotLines'][] = [
+ *     'value' => 3000000,
+ *     'color' => 'green',
+ *     'dashStyle' => 'shortdash',
+ *     'with' => 2,
+ *     'label' => [
+ *       'text' => 'foo',
+ *     ],
+ *   ];
+ *   if (isset($element['#raw_options'])) {
+ *     $element['#raw_options'] = NestedArray::mergeDeepArray([
+ *       $element['#raw_options'],
+ *       $raw_options,
+ *     ]);
+ *   }
+ *   $element['#raw_options'] = $raw_options;
+ * }
  */
-function template_preprocess_charts_chart(&$variables) {
 
-  // Define the View.
-  $view = $variables['view'];
-  drupal_set_message(json_encode(array_keys($view))." View keys");
+/*
+ * Implements hook_chart_definition_alter().
+ */
+function custom_line_chart_definition_alter(array &$definition, array $element, $chart_id) {
+  if ($element['#chart_library'] === 'highcharts') {
+    $view = $element['#view'];
+    $value = $view->header['my_custom_view_area']->options['data_field'];
+
+    $definition['yAxis']['plotLines'][] = [
+      'value' => $value,
+      'color' => 'green',
+      'dashStyle' => 'shortdash',
+      'width' => 2,
+      'label' => [
+        'text' => 'poo',
+      ],
+    ];
+  }
 }
