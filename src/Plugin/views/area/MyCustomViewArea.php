@@ -8,12 +8,8 @@
 
 namespace Drupal\custom_line\Plugin\views\area;
 
-use Drupal\charts_api_example\Controller\ChartsApiExample;
 use Drupal\views\Plugin\views\area\AreaPluginBase;
-use Drupal\views\Plugin\views\Display\DisplayPluginBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\views\ViewExecutable;
-use Drupal\Core\Url;
 
 /**
  * Defines a Plugin to custom min/max/target fields.
@@ -32,7 +28,13 @@ class MyCustomViewArea extends AreaPluginBase {
   protected function defineOptions() {
     $options = parent::defineOptions();
 
-    $options['data_field'] = ['default' => NULL];
+    $options['min']['data_min'] = ['default' => NULL];
+    $options['max']['data_max'] = ['default' => NULL];
+    $options['dash_style'] = ['default' => NULL];
+    $options['min']['min_color'] = ['default' => NULL];
+    $options['max']['max_color'] = ['default' => NULL];
+    $options['min']['min_label'] = ['default' => NULL];
+    $options['max']['max_label'] = ['default' => NULL];
 
     return $options;
   }
@@ -43,40 +45,101 @@ class MyCustomViewArea extends AreaPluginBase {
   public function buildOptionsForm(&$form, FormStateInterface $form_state) {
     parent::buildOptionsForm($form, $form_state);
 
-    $form['data_field'] = [
+    $colorOptions = [
+      'green' => 'Green',
+      'red' => 'Red',
+      'blue' => 'Blue',
+      'yellow' => 'Yellow',
+    ];
+
+    $dashStylesOptions = [
+      'Solid' => 'Solid',
+      'ShortDash' => 'ShortDash',
+      'ShortDot' => 'ShortDot',
+      'ShortDashDot' => 'ShortDashDot',
+      'ShortDashDotDot' => 'ShortDashDotDot',
+      'Dot' => 'Dot',
+      'Dash' => 'Dash',
+      'LongDash' => 'LongDash',
+      'DashDot' => 'DashDot',
+      'LongDashDot' => 'LongDashDot',
+      'LongDashDotDot' => 'LongDashDotDot',
+    ];
+
+    $form['min'] = array(
+      '#type' => 'fieldset',
+      '#title' => $this->t('Min options'),
+    );
+
+     $form['min']['data_min'] = [
+       '#type' => 'textfield',
+       '#title' => t('Enter the min value.'),
+       '#size' => 20,
+       '#maxlength' => 20,
+       '#default_value' => $this->options['min']['data_min'],
+     ];
+
+    $form['min']['min_label'] = [
       '#type' => 'textfield',
-      '#title' => t('Enter the min or max value.'),
-      '#default_value' => $this->options['data_field'],
+      '#title' => t('Enter the min label.'),
+      '#size' => 30,
+      '#maxlength' => 30,
+      '#default_value' => $this->options['min']['min_label'],
+    ];
+
+     $form['min']['min_color'] = array(
+       '#type' => 'select',
+       '#title' => $this->t('Min color'),
+       '#description' => $this->t('Please choose the color of the min line.'),
+       '#options' => $colorOptions,
+       '#default_value' => $this->options['min']['min_color'],
+     );
+
+    $form['max'] = array(
+      '#type' => 'fieldset',
+      '#title' => $this->t('Max options'),
+    );
+
+    $form['max']['data_max'] = [
+      '#type' => 'textfield',
+      '#title' => t('Enter the max value.'),
+      '#size' => 20,
+      '#maxlength' => 20,
+      '#default_value' => $this->options['max']['data_max'],
+      '#weight' => -11,
+    ];
+
+    $form['max']['max_label'] = [
+      '#type' => 'textfield',
+      '#title' => t('Enter the max label.'),
+      '#size' => 30,
+      '#maxlength' => 30,
+      '#default_value' => $this->options['max']['max_label'],
       '#weight' => -10,
     ];
+
+    $form['max']['max_color'] = array(
+      '#type' => 'select',
+      '#title' => $this->t('Max color'),
+      '#description' => $this->t('Please choose the color of the max line.'),
+      '#options' => $colorOptions,
+      '#default_value' => $this->options['max']['max_color'],
+    );
+
+    $form['dash_style'] = array(
+      '#type' => 'select',
+      '#title' => $this->t('Dash style lines.'),
+      '#description' => $this->t('Please select the dash style.'),
+      '#options' => $dashStylesOptions,
+      '#default_value' => $this->options['dash_style'],
+    );
+
   }
 
   /**
    * {@inheritdoc}
    */
   public function render($empty = FALSE) {
-//
-//      $field_value = $this->options['data_field'];
-//      $label = $this->options['admin_label'];
-//      $message = $this->t('<p class="no-results-found">Your value is <span>"@value"</span>.</p>', ['@value' => $field_value]);
-//
-//    $this->options['raw_options'] = [
-//      'yaxis' => [
-//        'plotLines' => [
-//          'value' => $field_value,
-//          'color' => 'green',
-//          'dashStyle' => 'shortdash',
-//          'with' => 2,
-//          'label' => [
-//            'text' => $label,
-//          ]
-//        ]
-//      ]
-//    ];
-//
-//    return [
-//      '#markup' => $message,
-//    ];
   }
 
 }

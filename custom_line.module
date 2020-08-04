@@ -1,7 +1,5 @@
 <?php
 
-// use Drupal\Component\Utility\NestedArray;
-
 /**
  * This is also an option in case you want to know about the line earlier on.
  *
@@ -31,16 +29,30 @@
 function custom_line_chart_definition_alter(array &$definition, array $element, $chart_id) {
   if ($element['#chart_library'] === 'highcharts') {
     $view = $element['#view'];
-    $value = $view->header['my_custom_view_area']->options['data_field'];
+    $minValue = $view->header['my_custom_view_area']->options['min']['data_min'];
+    $maxValue = $view->header['my_custom_view_area']->options['max']['data_max'];
+    $minLabel = $view->header['my_custom_view_area']->options['min']['min_label'];
+    $maxLabel = $view->header['my_custom_view_area']->options['max']['max_label'];
+    $minColor = $view->header['my_custom_view_area']->options['min']['min_color'];
+    $maxColor = $view->header['my_custom_view_area']->options['max']['max_color'];
+    $dashStyle = $view->header['my_custom_view_area']->options['dash_style'];
 
     $definition['yAxis']['plotLines'][] = [
-      'value' => $value,
-      'color' => 'green',
-      'dashStyle' => 'shortdash',
+      'value' => $minValue,
+      'color' => $minColor,
+      'dashStyle' => $dashStyle,
       'width' => 2,
       'label' => [
-        'text' => 'foo',
+        'text' => $minLabel,
       ],
+    ];
+
+    $definition['yAxis']['plotLines'][] = [
+      'value' => $maxValue,
+      'color' => $maxColor,
+      'dashStyle' => $dashStyle,
+      'width' => 2,
+      'label' => $maxLabel,
     ];
   }
 }
